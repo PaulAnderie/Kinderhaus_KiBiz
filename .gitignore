@@ -1,0 +1,15 @@
+# Exclude Python virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Exclude sensitive financial data and outputs
+*.csv
+*.xlsx
+*.xls
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
