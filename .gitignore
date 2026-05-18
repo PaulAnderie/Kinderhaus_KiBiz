@@ -1,10 +1,15 @@
-# Python
+# Exclude Python virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Python cache and builds
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
-env/
 build/
 develop-eggs/
 dist/
@@ -21,17 +26,15 @@ wheels/
 .installed.cfg
 *.egg
 
-# Virtual environments
-venv/
-.venv/
+# Exclude sensitive financial data and outputs
+*.csv
+!kategorien_mapping.csv
+*.xlsx
+*.xls
+*.pdf
 
 # App-specific
 uploads/
-kibiz_summen_abgabebereit.csv
-kibiz_einzelbuchungen_kontrolle.csv
-transactions_export.csv
-Umsaetze_*.csv
 2022/
 2023/
 KGJ_*/
-*.pdf
