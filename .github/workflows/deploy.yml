@@ -1,0 +1,46 @@
+name: Deploy to Cloud Run
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  PROJECT_ID: ${{ secrets.GCP_PROJECT }}
+  REGION: europe-west1
+  SERVICE_NAME: kibiz-app
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Authorize Docker push
+        run: gcloud auth configure-docker ${REGION}-docker.pkg.dev
+
+      - name: Build and Push Docker image
+        run: |
+          # Use gcloud to build and push using Cloud Build (simplest setup)
+          # Alternatively, you can use local docker build and push to Artifact Registry
+          gcloud builds submit --tag gcr.io/${PROJECT_ID}/${SERVICE_NAME}:${{ github.sha }} .
+
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy ${SERVICE_NAME} \
+            --image gcr.io/${PROJECT_ID}/${SERVICE_NAME}:${{ github.sha }} \
+            --region ${REGION} \
+            --platform managed \
+            --allow-unauthenticated \
+            --memory 512Mi \
+            --port 8080
