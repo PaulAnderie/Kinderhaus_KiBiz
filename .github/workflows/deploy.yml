@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  PROJECT_ID: ${{ secrets.GCP_PROJECT }}
+  PROJECT_ID: kinderhaus-488909
   REGION: europe-west1
   SERVICE_NAME: kibiz-app
 
